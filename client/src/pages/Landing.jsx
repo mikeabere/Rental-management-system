@@ -15,7 +15,7 @@ function Landing() {
       <div className="container page">
         <div className="info">
           <h1>
-            job <span>tracking</span>app
+            job <span>tracking</span> app
           </h1>
           <p>
             I'm baby wayfarers hoodie next level taiyaki brooklyn cliche blue
