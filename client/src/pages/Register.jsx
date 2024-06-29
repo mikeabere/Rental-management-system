@@ -13,7 +13,7 @@ function Register() {
         <h4>Register</h4>
         <FormRow type="text" name="name" />
         <FormRow type="text" name="lastName" labelText="last name" />
-        <FormRow type="text" name="location" />
+        <FormRow type="text" name="role" />
         <FormRow type="email" name="email" />
 
         <FormRow type="password" name="password" />
