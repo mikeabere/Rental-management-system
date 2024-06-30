@@ -14,6 +14,7 @@ function Register() {
         <FormRow type="text" name="name" />
         <FormRow type="text" name="lastName" labelText="last name" />
         <FormRow type="text" name="role" />
+        <FormRow type="number" name="phone" />
         <FormRow type="email" name="email" />
 
         <FormRow type="password" name="password" />
