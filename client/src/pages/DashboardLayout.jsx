@@ -19,7 +19,7 @@ export const loader = async () => {
 const DashboardContext = createContext();
 
 function DashboardLayout({ queryClient }) {
-  const { user } = useLoaderData();
+  const  user  = useLoaderData();
   const navigate = useNavigate();
 
   const [showSidebar, setShowSidebar] = useState(false);
