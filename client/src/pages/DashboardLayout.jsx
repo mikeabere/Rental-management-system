@@ -19,6 +19,8 @@ export const loader = async () => {
 const DashboardContext = createContext();
 
 function DashboardLayout({ queryClient }) {
+
+  //use variable instead of object
   const  user  = useLoaderData();
   const navigate = useNavigate();
 
