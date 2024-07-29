@@ -7,3 +7,8 @@ export { default as Navbar } from "./Navbar";
 export { default as NavLinks } from "./NavLinks";
 export { default as LogoutContainer } from "./LogoutContainer";
 export { default as ThemeToggle } from "./ThemeToggle";
+export { default as StatsContainer } from "./StatsContainer";
+export { default as ChartsContainer } from "./ChartsContainer";
+export { default as AreaChart } from "./AreaChart";
+export { default as BarChart } from "./BarChart";
+export { default as StatItem } from "./StatItem";

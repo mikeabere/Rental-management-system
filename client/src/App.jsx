@@ -1,8 +1,9 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Error, Login, Register, Landing, HomeLayout, DashboardLayout } from "./pages";
+import { Error, Login, Register, Landing, HomeLayout, DashboardLayout, Tenants, Units, Stats } from "./pages";
 
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
+import { loader as statsLoader } from "./pages/Stats";
 
 export const checkDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem("darkTheme") === "true";
@@ -34,6 +35,24 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <DashboardLayout />,
         loader: dashboardLoader,
+        children: [
+          {
+            index: true,
+            path: "stats",
+            element: <Stats />,
+            loader: statsLoader,
+          },
+          {
+            path: "units",
+            element: <Units />,
+            //loader: statsLoader,
+          },
+          {
+            path: "tenants",
+            element: <Tenants />,
+            //loader: statsLoader,
+          },
+        ],
       },
     ],
   },
