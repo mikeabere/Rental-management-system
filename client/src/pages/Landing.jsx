@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Wrapper from "../assets/wrappers/LandingPage";
-import main from "../assets/images/main.svg";
+import main from "../assets/images/houses.svg";
 
 import { Link } from "react-router-dom";
 import { Logo } from "../components";
@@ -15,7 +15,7 @@ function Landing() {
       <div className="container page">
         <div className="info">
           <h1>
-            job <span>tracking</span> app
+            Rent <span>collection</span> app
           </h1>
           <p>
             I'm baby wayfarers hoodie next level taiyaki brooklyn cliche blue
