@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            path: "stats",
+           // path: "stats",
             element: <Stats />,
             loader: statsLoader,
           },
