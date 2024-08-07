@@ -1,8 +1,12 @@
 import React from 'react'
+import AddHouseModal from './AddTenant'
 
 function Tenants() {
   return (
-    <div>Tenants</div>
+    <>
+    <h3>Tenants</h3>
+    <AddHouseModal/>
+    </>
   )
 }
 

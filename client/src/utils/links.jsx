@@ -7,8 +7,8 @@ import { ImProfile } from "react-icons/im";
 import { MdAdminPanelSettings } from "react-icons/md";
 
 const links = [
-  { text: "properties", path: ".", icon: <FaWpforms /> },
-  { text: "stats", path: "stats", icon: <MdQueryStats /> },
+  { text: "dashboard", path: ".", icon: <FaWpforms /> },
+  { text: "units", path: "units", icon: <MdQueryStats /> },
   { text: "tenants", path: "tenants", icon: <IoBarChartSharp /> },
   { text: "profile", path: "profile", icon: <ImProfile /> },
   { text: "admin", path: "admin", icon: <MdAdminPanelSettings /> },

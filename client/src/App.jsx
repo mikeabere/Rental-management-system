@@ -1,6 +1,15 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Error, Login, Register, Landing, HomeLayout, DashboardLayout, Tenants, Units, Stats } from "./pages";
+import { Error, 
+  Login, 
+  Register,
+   Landing, 
+   HomeLayout, 
+   DashboardLayout,
+    Tenants, 
+    Units, 
+    Stats ,
+  } from "./pages";
 
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
 import { loader as statsLoader } from "./pages/Stats";
@@ -38,7 +47,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-           // path: "stats",
+            // path: "stats",
             element: <Stats />,
             loader: statsLoader,
           },
@@ -52,6 +61,7 @@ const router = createBrowserRouter([
             element: <Tenants />,
             //loader: statsLoader,
           },
+        
         ],
       },
     ],
