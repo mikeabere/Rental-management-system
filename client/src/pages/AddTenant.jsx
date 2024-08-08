@@ -1,41 +1,56 @@
 import { useState } from "react";
+import {  redirect } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
-import axios from "axios";
+//import axios from "axios";
+import { toast } from "react-toastify";
+import customFetch from "../utils/customFetch";
+
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+
+  try {
+    await customFetch.post("/tenants", data);
+    toast.success("Tenant added successfully");
+    return redirect("tenants");
+  } catch (error) {
+    toast.error(error?.response?.data?.msg);
+    return error;
+  }
+};
 
 function AddHouseModal() {
-  const [houseName, setHouseName] = useState("");
-  const [propertyNumber, setPropertyNumber] = useState();
-  const [houseLocation, setHouseLocation] = useState("");
-  const [landLordName, setLandLordName] = useState("");
-  const [houseRent, setHouseRent] = useState();
-  const [houseType, setHouseType] = useState("");
-  const [houseDesc, setHouseDesc] = useState("");
+  //const [tenantName, setTenantName] = useState("");
+  //const [age, setAge] = useState("");
+ // const [jobStatus, setJobStatus] = useState("");
+  //const [jobType, setJobType] = useState("");
+  //const [jobLocation, setJobLocation] = useState("");
+
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  async function handleAddData(e) {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:5000/api/house/add", {
-        houseName: houseName,
-        propertyNumber: propertyNumber,
-        houseLocation: houseLocation,
-        landLordName: landLordName,
-        houseRent: houseRent,
-        houseType: houseType,
-        houseDesc: houseDesc,
-      });
-
-      console.log(response.data);
-      setShow(false);
-    } catch (error) {
-      console.log(error.response);
-    }
-  }
+  //async function handleAddData(e) {
+   // e.preventDefault();
+    //try {
+      //const response = await axios.post("http://localhost:6000/api/v1/tenants", {
+      //  tenantNamename: tenantName,
+       // age: age,
+        //jobStatus: jobStatus,
+        //jobType: jobType,
+        //jobLocation: houseRent,
+      
+     // });
+     
+     // console.log(response.data);
+     // setShow(false);
+    //} catch (error) {
+   //   console.log(error.response);
+    //}
+  //}
 
   return (
     <>
@@ -49,82 +64,62 @@ function AddHouseModal() {
 
       <Modal show={show} onHide={handleClose}>
         <Form
-          className=""
+          className="form"
           method="POST"
-          action="/api/house/add"
-          onSubmit={handleAddData}
+          action="/api/v1/tenants"
+          //onSubmit={handleAddData}
         >
           <Modal.Header closeButton>
-            <Modal.Title>House Form</Modal.Title>
+            <Modal.Title>Tenant Form</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form.Group className="mb-3" controlId="formBasicHousename">
-              <Form.Label>House Name</Form.Label>
+            <Form.Group className="mb-3" controlId="formBasicTenantname">
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="House Name"
-                value={houseName}
-                onChange={(e) => setHouseName(e.target.value)}
+                placeholder="Tenant Name"
+                name="tenantName"
+                //onChange={(e) => setTenantName(e.target.value)}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPropertynumber">
-              <Form.Label>Property Number</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="Property Number"
-                value={propertyNumber}
-                onChange={(e) => setPropertyNumber(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicHouselocation">
-              <Form.Label>House Location</Form.Label>
+            <Form.Group className="mb-3" controlId="formBasicAge">
+              <Form.Label>Age</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="House Location"
-                value={houseLocation}
-                onChange={(e) => setHouseLocation(e.target.value)}
+                placeholder="Age"
+                name="age"
+                //onChange={(e) => setAge(e.target.value)}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicLandlordname">
-              <Form.Label>Landlord Name</Form.Label>
+            <Form.Group className="mb-3" controlId="formBasicJobstatus">
+              <Form.Label>Job Status</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Landlord Name"
-                value={landLordName}
-                onChange={(e) => setLandLordName(e.target.value)}
+                placeholder="Job Status"
+                name="jobStatus"
+                //onChange={(e) => setJobStatus(e.target.value)}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicHouserent">
-              <Form.Label>House Rent</Form.Label>
-              <Form.Control
-                type="number"
-                placeholder="House Rent"
-                value={houseRent}
-                onChange={(e) => setHouseRent(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formBasicHousetype">
-              <Form.Label>House Type</Form.Label>
+            <Form.Group className="mb-3" controlId="formBasicJobtype">
+              <Form.Label>Job Type</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="House Type"
-                value={houseType}
-                onChange={(e) => setHouseType(e.target.value)}
+                placeholder="Job Type"
+                name="jobType"
+                //onChange={(e) => setJobType(e.target.value)}
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicHousedesc">
-              <Form.Label>House Desc</Form.Label>
+            <Form.Group className="mb-3" controlId="formBasicJoblocation">
+              <Form.Label>Job Location</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="House Desc"
-                value={houseDesc}
-                onChange={(e) => setHouseDesc(e.target.value)}
+                placeholder="Job Location"
+                name="jobLocation"
+                //onChange={(e) => setJobLocation(e.target.value)}
               />
             </Form.Group>
           </Modal.Body>
@@ -132,7 +127,7 @@ function AddHouseModal() {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" >
               Submit
             </Button>
           </Modal.Footer>

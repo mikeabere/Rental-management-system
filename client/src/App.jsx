@@ -9,10 +9,12 @@ import { Error,
     Tenants, 
     Units, 
     Stats ,
+    AddTenant,
   } from "./pages";
 
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
 import { loader as statsLoader } from "./pages/Stats";
+import { action as addTenantAction } from "./pages/AddTenant";
 
 export const checkDefaultTheme = () => {
   const isDarkTheme = localStorage.getItem("darkTheme") === "true";
@@ -59,9 +61,13 @@ const router = createBrowserRouter([
           {
             path: "tenants",
             element: <Tenants />,
-            //loader: statsLoader,
+            //action: addTenantAction,
           },
-        
+          {
+            path: "addtenant",
+            element: <AddTenant />,
+            action: addTenantAction,
+          },
         ],
       },
     ],
