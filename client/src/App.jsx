@@ -9,7 +9,7 @@ import { Error,
     Tenants, 
     Units, 
     Stats ,
-    AddTenant,
+    
   } from "./pages";
 
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
@@ -61,13 +61,9 @@ const router = createBrowserRouter([
           {
             path: "tenants",
             element: <Tenants />,
-            //action: addTenantAction,
-          },
-          {
-            path: "addtenant",
-            element: <AddTenant />,
             action: addTenantAction,
           },
+         
         ],
       },
     ],
