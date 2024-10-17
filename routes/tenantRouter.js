@@ -7,7 +7,7 @@ import {
   createTenant,
   updateTenant,
   deleteTenant,
-  showStats,
+  //showStats,
 } from "../controllers/tenantController.js";
 //import {
   //validateJobInput,
@@ -21,7 +21,7 @@ router
   .route("/")
   .get(getAllTenants)
   .post(createTenant);
-router.route("/stats").get(showStats);
+router.route("/stats");
 router
   .route("/:id")
   .get( getTenant)

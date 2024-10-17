@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    default: "my city",
+    default: "Nairobi",
   },
   role: {
     type: String,

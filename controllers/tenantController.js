@@ -1,7 +1,7 @@
 import Tenant from "../models/tenantModel.js";
 import { StatusCodes } from "http-status-codes";
-import mongoose from "mongoose";
-import day from "dayjs";
+//import mongoose from "mongoose";
+//import day from "dayjs";
 
 export const getAllTenants = async (req, res) => {
   //const { search, jobStatus, jobType, sort } = req.query;
@@ -75,47 +75,47 @@ export const deleteTenant = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: "tenant deleted", job: removedTenant });
 };
 
-export const showStats = async (req, res) => {
-  let stats = await Tenant.aggregate([
-    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
-    { $group: { _id: "$jobStatus", count: { $sum: 1 } } },
-  ]);
-  stats = stats.reduce((acc, curr) => {
-    const { _id: title, count } = curr;
-    acc[title] = count;
-    return acc;
-  }, {});
+// export const showStats = async (req, res) => {
+//   let stats = await Tenant.aggregate([
+//     { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
+//     { $group: { _id: "$jobStatus", count: { $sum: 1 } } },
+//   ]);
+//   stats = stats.reduce((acc, curr) => {
+//     const { _id: title, count } = curr;
+//     acc[title] = count;
+//     return acc;
+//   }, {});
 
-  const defaultStats = {
-    pending: stats.pending || 0,
-    interview: stats.interview || 0,
-    declined: stats.declined || 0,
-  };
+//   const defaultStats = {
+//     pending: stats.pending || 0,
+//     interview: stats.interview || 0,
+//     declined: stats.declined || 0,
+//   };
 
-  let monthlyApplications = await Job.aggregate([
-    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
-    {
-      $group: {
-        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
-        count: { $sum: 1 },
-      },
-    },
-    { $sort: { "_id.year": -1, "_id.month": -1 } },
-    { $limit: 6 },
-  ]);
-  monthlyApplications = monthlyApplications
-    .map((item) => {
-      const {
-        _id: { year, month },
-        count,
-      } = item;
+//   let monthlyApplications = await Job.aggregate([
+//     { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
+//     {
+//       $group: {
+//         _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+//         count: { $sum: 1 },
+//       },
+//     },
+//     { $sort: { "_id.year": -1, "_id.month": -1 } },
+//     { $limit: 6 },
+//   ]);
+//   monthlyApplications = monthlyApplications
+//     .map((item) => {
+//       const {
+//         _id: { year, month },
+//         count,
+//       } = item;
 
-      const date = day()
-        .month(month - 1)
-        .year(year)
-        .format("MMM YY");
-      return { date, count };
-    })
-    .reverse();
-  res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
-};
+//       const date = day()
+//         .month(month - 1)
+//         .year(year)
+//         .format("MMM YY");
+//       return { date, count };
+//     })
+//     .reverse();
+//   res.status(StatusCodes.OK).json({ defaultStats, monthlyApplications });
+// };

@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../models/userModel.js";
-import Job from "../models/JobModel.js";
-import cloudinary from "cloudinary";
+//import Job from "../models/JobModel.js";
+//import cloudinary from "cloudinary";
 import { promises as fs } from "fs";
 
 export const getCurrentUser = async (req, res) => {
@@ -28,8 +28,8 @@ export const updateUser = async (req, res) => {
 
   const updatedUser = await User.findByIdAndUpdate(req.user.userId, newUser);
 
-  if (req.file && updatedUser.avatarPublicId) {
-    await cloudinary.v2.uploader.destroy(updatedUser.avatarPublicId);
-  }
+  // if (req.file && updatedUser.avatarPublicId) {
+  //   await cloudinary.v2.uploader.destroy(updatedUser.avatarPublicId);
+  // }
   res.status(StatusCodes.OK).json({ msg: "update user" });
 };

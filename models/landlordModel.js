@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import { GENDER } from "../utils/constants.js";
 
-const TenantSchema = new mongoose.Schema(
+const LandlordSchema = new mongoose.Schema(
   {
-    tenantName: { type: String, required: true },
-    tenantAge: { type: String, required: true },
-    tenantID: {
+    landlordName: { type: String, required: true },
+    landlordAge: { type: String, required: true },
+    landlordID: {
       type: String,
       required: true,
     },
@@ -14,7 +14,7 @@ const TenantSchema = new mongoose.Schema(
       enum: Object.values(GENDER),
       default: GENDER.UNKNOWN,
     },
-    tenantLocation: {
+    landlordLocation: {
       type: String,
       default: "Nairobi",
     },
@@ -26,4 +26,4 @@ const TenantSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Tenant", TenantSchema);
+export default mongoose.model("Landlord", LandlordSchema);
