@@ -12,9 +12,12 @@ app.use(cors());
 app.use(express.json());
 
 import tenantRouter from "./routes/tenantRouter.js";
+import unitRouter from "./routes/unitRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 app.use("/api/v1/tenants", tenantRouter);
-
+app.use("/api/v1/units", unitRouter);
+app.use("/api/v1/auth", authRouter);
 
 
 

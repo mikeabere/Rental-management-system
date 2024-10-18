@@ -37,7 +37,7 @@ export const getAllTenants = async (req, res) => {
   //const limit = Number(req.query.limit) || 10;
   //const skip = (page - 1) * limit;
 
-  const jobs = await Tenant.find({});
+  const tenants = await Tenant.find({});
     //.sort(sortKey)
     //.skip(skip)
     //.limit(limit);
@@ -47,7 +47,7 @@ export const getAllTenants = async (req, res) => {
 
   res
     .status(StatusCodes.OK)
-    .json({ jobs });
+    .json({ tenants });
 };
 
 export const createTenant = async (req, res) => {
