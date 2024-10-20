@@ -1,19 +1,19 @@
 import { useState, createContext, useContext } from "react";
-import { Outlet, useLoaderData  } from "react-router-dom";
+import { Outlet, useLoaderData, useNavigate , redirect } from "react-router-dom"; //added
 import Wrapper from "../assets/wrappers/Dashboard";
 import { Navbar, BigSidebar, SmallSidebar } from "../components";
 
 import { checkDefaultTheme } from "../App";
-//import customFetch from "../utils/customFetch";
-//import { toast } from "react-toastify";
+import customFetch from "../utils/customFetch";
+import { toast } from "react-toastify";
 
 export const loader = async () => {
-  // try {
-  //   const { data } = await customFetch("/users/current-user");
-  //   return data;
-  // } catch (error) {
-  //   return redirect("/");
-  // }
+  try {
+    const { data } = await customFetch("/users/current-user");
+    return data;
+  } catch (error) {
+    return redirect("/");
+  }
 };
 
 const DashboardContext = createContext();
@@ -22,7 +22,7 @@ function DashboardLayout({ queryClient }) {
 
   //use variable instead of object
   const  user  = useLoaderData();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkDefaultTheme());
@@ -39,9 +39,9 @@ function DashboardLayout({ queryClient }) {
   };
 
   const logoutUser = async () => {
-    // navigate("/");
-    // await customFetch.get("/auth/logout");
-    // toast.success("Logging out...");
+    navigate("/");
+    await customFetch.get("/auth/logout");
+    toast.success("Logging out...");
   };
   return (
     <DashboardContext.Provider

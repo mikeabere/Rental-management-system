@@ -7,8 +7,10 @@ const app = express();
 import cors from "cors";
 
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 import tenantRouter from "./routes/tenantRouter.js";

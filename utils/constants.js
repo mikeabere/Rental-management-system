@@ -10,6 +10,12 @@ export const JOB_TYPE = {
   INTERNSHIP: "internship",
 };
 
+export const JOB_STATUS = {
+  PENDING: "pending",
+  INTERVIEW: "interview",
+  DECLINED: "declined",
+};
+
 export const GENDER = {
   MALE: "male",
   FEMALE: "female",
