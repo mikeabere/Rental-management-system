@@ -6,7 +6,8 @@ import { Error,
    Landing, 
    HomeLayout, 
    DashboardLayout,
-    Tenants, 
+    //Tenants, 
+    AddTenant,
     Units, 
     Stats ,
     
@@ -60,10 +61,9 @@ const router = createBrowserRouter([
           },
           {
             path: "tenants",
-            element: <Tenants />,
+            element: <AddTenant />,
             action: addTenantAction,
           },
-         
         ],
       },
     ],

@@ -10,11 +10,11 @@ export const getCurrentUser = async (req, res) => {
   res.status(StatusCodes.OK).json({ user: userWithoutPassword });
 };
 
-// export const getApplicationStats = async (req, res) => {
-//   const users = await User.countDocuments();
-//   const jobs = await Job.countDocuments();
-//   res.status(StatusCodes.OK).json({ users, jobs });
-// };
+export const getApplicationStats = async (req, res) => {
+  const users = await User.countDocuments();
+  //const jobs = await Job.countDocuments();
+  res.status(StatusCodes.OK).json({ users });
+};
 
 export const updateUser = async (req, res) => {
   const newUser = { ...req.body };

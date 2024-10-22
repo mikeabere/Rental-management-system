@@ -1,5 +1,5 @@
 import { useState, createContext, useContext } from "react";
-import { Outlet, useLoaderData, useNavigate , redirect } from "react-router-dom"; //added
+import { Outlet, useLoaderData, useNavigate  } from "react-router-dom"; //added
 import Wrapper from "../assets/wrappers/Dashboard";
 import { Navbar, BigSidebar, SmallSidebar } from "../components";
 
