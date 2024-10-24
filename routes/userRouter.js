@@ -7,15 +7,15 @@ import {
   updateUser,
 } from "../controllers/userController.js";
 //import { validateUpdateUserInput } from "../middleware/validationMiddleware.js";
-//import {
-  //authorizePermissions,
+import {
+  authorizePermissions,
   //checkForTestUser,
-//} from "../middleware/authMiddleware.js";
+} from "../middleware/authMiddleware.js";
 //import upload from "../middleware/multerMiddleware.js";
 
 router.get("/current-user", getCurrentUser);
 router.get("/admin/app-stats", [
- // authorizePermissions("admin"),
+  authorizePermissions("admin"),
   getApplicationStats,
 ]);
 router.patch(
