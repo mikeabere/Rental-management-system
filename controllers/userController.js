@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import User from "../models/userModel.js";
-//import Job from "../models/JobModel.js";
+import Tenant from "../models/tenantModel.js";
 //import cloudinary from "cloudinary";
 import { promises as fs } from "fs";
 
@@ -13,8 +13,8 @@ export const getCurrentUser = async (req, res) => {
 
 export const getApplicationStats = async (req, res) => {
   const users = await User.countDocuments();
-  //const jobs = await Job.countDocuments();
-  res.status(StatusCodes.OK).json({ users });
+  const tenants = await Tenant.countDocuments();
+  res.status(StatusCodes.OK).json({ users, tenants });
 };
 
 export const updateUser = async (req, res) => {
