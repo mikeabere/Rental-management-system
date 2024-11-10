@@ -2,7 +2,7 @@ import React from "react";
 import { Link, Form, redirect, useNavigate } from "react-router-dom";
 import { Logo, FormRow, SubmitBtn } from "../components";
 import Wrapper from "../assets/wrappers/RegisterAndLoginPage";
-
+import { toast } from "react-toastify";
 
 
 
