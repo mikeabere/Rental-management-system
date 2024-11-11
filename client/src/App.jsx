@@ -13,6 +13,8 @@ import { Error,
     
   } from "./pages";
 
+import { action as registerAction } from "./pages/Register";
+import { action as loginAction } from "./pages/Login";
 import { loader as dashboardLoader } from "./pages/DashboardLayout";
 import { loader as statsLoader } from "./pages/Stats";
 import { action as addTenantAction } from "./pages/AddTenant";
@@ -38,10 +40,12 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+        action: registerAction,
       },
       {
         path: "login",
         element: <Login />,
+        action: loginAction,
       },
       {
         path: "dashboard",
