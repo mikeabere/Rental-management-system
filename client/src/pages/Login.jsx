@@ -2,6 +2,7 @@ import React from "react";
 import { Link, Form, redirect, useNavigate } from "react-router-dom";
 import { Logo, FormRow, SubmitBtn } from "../components";
 import Wrapper from "../assets/wrappers/RegisterAndLoginPage";
+import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
 
 export const action = async ({ request }) => {

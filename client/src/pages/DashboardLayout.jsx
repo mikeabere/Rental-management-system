@@ -9,10 +9,10 @@ import { toast } from "react-toastify";
 
 export const loader = async () => {
   try {
-    // const { data } = await customFetch("/users/current-user");
-    // return data;
+     const { data } = await customFetch("/users/current-user");
+     return data;
   } catch (error) {
-   // return redirect("/");
+    return redirect("/");
   }
 };
 
@@ -21,7 +21,7 @@ const DashboardContext = createContext();
 function DashboardLayout({ queryClient }) {
 
   //use variable instead of object
-  const  {user}  = useLoaderData();
+  const  { user }  = useLoaderData();
   const navigate = useNavigate();
 
   const [showSidebar, setShowSidebar] = useState(false);
