@@ -10,7 +10,10 @@ import { Error,
     AddTenant,
     Units, 
     Stats ,
-    
+    Profile,
+    Reports,
+    Messaging,
+    Statement,
   } from "./pages";
 
 import { action as registerAction } from "./pages/Register";
@@ -67,6 +70,22 @@ const router = createBrowserRouter([
             path: "tenants",
             element: <AddTenant />,
             action: addTenantAction,
+          },
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+          {
+            path: "reports",
+            element: <Reports />,
+          },
+          {
+            path: "messaging",
+            element: <Messaging />,
+          },
+          {
+            path: "statement",
+            element: <Statement />,
           },
         ],
       },

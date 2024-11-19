@@ -8,5 +8,9 @@ export { default as Tenants } from "./Tenants";
 export { default as Units } from "./Units";
 export { default as Stats } from "./Stats";
 export { default as AddTenant } from "./AddTenant";
+export { default as Profile } from "./Profile";
+export { default as Reports } from "./Reports";
+export { default as Statement } from "./Statement";
+export { default as Messaging } from "./Messaging";
 
 
