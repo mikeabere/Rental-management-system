@@ -13,13 +13,13 @@ export const loader = async () => {
 };
 
 function Stats() {
-  const { defaultStats, monthlyApplications } = useLoaderData();
+  //const { defaultStats, monthlyApplications } = useLoaderData();
   return (
     <>
-      <StatsContainer defaultStats={defaultStats} />
+      {/* <StatsContainer defaultStats={defaultStats} />
       {monthlyApplications?.length > 0 && (
         <ChartsContainer data={monthlyApplications} />
-      )}
+      )} */}
     </>
   );
 }
