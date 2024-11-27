@@ -12,5 +12,11 @@ export { default as Profile } from "./Profile";
 export { default as Reports } from "./Reports";
 export { default as Statement } from "./Statement";
 export { default as Messaging } from "./Messaging";
+export { default as Accounts } from "./Accounts";
+export { default as UpdatePayment } from "./UpdatePayment";
+export { default as WithdrawFunds } from "./WithdrawFunds";
+
+
+
 
 
