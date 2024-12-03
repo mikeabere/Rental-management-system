@@ -15,6 +15,8 @@ export { default as Messaging } from "./Messaging";
 export { default as Accounts } from "./Accounts";
 export { default as UpdatePayment } from "./UpdatePayment";
 export { default as WithdrawFunds } from "./WithdrawFunds";
+export { default as Invoicing } from "./Invoicing";
+export { default as Properties } from "./Properties";
 
 
 
