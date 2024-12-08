@@ -15,6 +15,8 @@ const links = [
   { text: "reports", path: "reports", icon: <MdAdminPanelSettings /> },
   { text: "messaging", path: "messaging", icon: <MdAdminPanelSettings /> }, 
   { text: "statement", path: "statement", icon: <MdAdminPanelSettings /> }, 
+  { text: "withdrawfunds", path: "withdrawfunds", icon: <MdAdminPanelSettings /> }, 
 ];
+
 
 export default links;
