@@ -13,9 +13,18 @@ const links = [
   { text: "profile", path: "profile", icon: <ImProfile /> }, //profile
   { text: "admin", path: "admin", icon: <MdAdminPanelSettings /> }, //admin
   { text: "reports", path: "reports", icon: <MdAdminPanelSettings /> },
-  { text: "messaging", path: "messaging", icon: <MdAdminPanelSettings /> }, 
-  { text: "statement", path: "statement", icon: <MdAdminPanelSettings /> }, 
-  { text: "withdrawfunds", path: "withdrawfunds", icon: <MdAdminPanelSettings /> }, 
+  { text: "messaging", path: "messaging", icon: <MdAdminPanelSettings /> },
+  { text: "statement", path: "statement", icon: <MdAdminPanelSettings /> },
+  {
+    text: "withdrawfunds",
+    path: "withdrawfunds",
+    icon: <MdAdminPanelSettings />,
+  },
+  {
+    text: "updatepayment",
+    path: "updatepayment",
+    icon: <MdAdminPanelSettings />,
+  },
 ];
 
 
