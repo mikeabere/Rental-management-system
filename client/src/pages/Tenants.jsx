@@ -4,7 +4,7 @@ import AddTenant from './AddTenant'
 function Tenants() {
   return (
     <>
-    <h3>Tenants</h3>
+    <h3>Tenant</h3>
      <AddTenant/>
     </>
   )
