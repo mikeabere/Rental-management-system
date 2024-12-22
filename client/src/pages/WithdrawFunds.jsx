@@ -2,7 +2,7 @@ import React from 'react'
 
 function WithdrawFunds() {
   return (
-    <div>WithdrawFunds</div>
+    <div>WithdrawFund</div>
   )
 }
 
