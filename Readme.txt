@@ -1,2 +1,2 @@
 -------README-------
-Rental Management
+Rental Management System
