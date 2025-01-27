@@ -1,4 +1,4 @@
 -------README-------
 Rental Management System
  
-This ia a
+This ia a property
