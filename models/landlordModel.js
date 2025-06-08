@@ -3,7 +3,7 @@ import { GENDER } from "../utils/constants.js";
 
 const LandlordSchema = new mongoose.Schema(
   {
-    landlordName: { type: String, required: true },
+    landlordName: { type: String, required: true , ref: 'User',},
     landlordAge: { type: String, required: true },
     landlordID: {
       type: String,
