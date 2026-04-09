@@ -4,10 +4,11 @@ dotenv.config();
 import express from "express";
 const app = express();
 
-//import cors from "cors";
+import cors from "cors";
 
-import mongoose from "mongoose";
+
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 
 
 
@@ -19,7 +20,8 @@ import userRouter from "./routes/userRouter.js";
 //middleware
 import { authenticateUser } from "./middleware/authMiddleware.js";
 
-//app.use(cors());
+app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
+app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 
@@ -28,21 +30,14 @@ app.use("/api/v1/units", unitRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users",authenticateUser, userRouter);
 
+// Health check
+app.get('/', (req, res) => res.json({ message: '🏠 Rental Management Backend Running - Kenya Edition' }));
 
 
+const PORT = process.env.PORT || 6000;
+
+app.listen( PORT, ()=> {
+   console.log(`🚀 Server running on port ${PORT}`);
+});
 
 
-
-
-const port = process.env.PORT || 6000;
-
-try {
-  await mongoose.connect(process.env.MONGO_URL);
-
-  app.listen(port, () => {
-    console.log(`server running on PORT ${port}....`);
-  });
-} catch (error) {
-  console.log(error);
-  process.exit(1);
-}
