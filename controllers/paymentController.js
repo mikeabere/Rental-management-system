@@ -1,16 +1,16 @@
 import Payment from '../models/paymentModel.js';
 import Lease from '../models/leaseModel.js';
-import { initiateSTKPush } from '../utils/mpesa';
-import { initiateJengaSTK } from '../utils/jenga';
-import { uuidv4 } from 'uuid';
-
+import { initiateSTKPush } from '../utils/mpesa.js';
+import { initiateJengaSTK } from '../utils/jenga.js';
+import  uuid  from 'uuid'; //will look into this
+//will check on this controller later
 export const initiatePayment = async (req, res) => {
   const { leaseId, method, phone, amount } = req.body;
   const lease = await Lease.findById(leaseId).populate('tenant');
 
   if (!lease) return res.status(404).json({ message: 'Lease not found' });
 
-  const transactionId = uuidv4();
+  const transactionId = uuid();
   const payment = await Payment.create({
     lease: leaseId,
     amount,

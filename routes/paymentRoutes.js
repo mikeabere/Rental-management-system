@@ -1,15 +1,9 @@
 import express from 'express';
 const router = express.Router();
-const { protect } = require('../middleware/auth');
-const { initiatePayment } = require('../controllers/paymentControlle.js');
+import { protect } from '../middleware/auth.js';
+import { initiatePayment } from '../controllers/paymentController.js';
 
 router.post('/initiate', protect, initiatePayment);
-module.exports = router;
 
-// mpesaRoutes.js
-const express = require('express');
-const router = express.Router();
-const { mpesaCallback } = require('../controllers/paymentController');
+export default router;
 
-router.post('/callback', mpesaCallback);
-module.exports = router;
