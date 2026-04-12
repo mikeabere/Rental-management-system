@@ -2,7 +2,7 @@ import Payment from '../models/paymentModel.js';
 import Lease from '../models/leaseModel.js';
 import { initiateSTKPush } from '../utils/mpesa.js';
 import { initiateJengaSTK } from '../utils/jenga.js';
-import  uuid  from 'uuid'; //will look into this
+import { v4 as uuidv4 } from 'uuid'; //will look into this
 //will check on this controller later
 export const initiatePayment = async (req, res) => {
   const { leaseId, method, phone, amount } = req.body;
@@ -10,7 +10,7 @@ export const initiatePayment = async (req, res) => {
 
   if (!lease) return res.status(404).json({ message: 'Lease not found' });
 
-  const transactionId = uuid();
+  const transactionId = uuidv4(); //will look into this
   const payment = await Payment.create({
     lease: leaseId,
     amount,

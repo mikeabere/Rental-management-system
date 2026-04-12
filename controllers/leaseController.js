@@ -27,7 +27,7 @@ export const createLease = async (req, res) => {
 export const getLeases = async (req, res) => {
   try {
     let filter = {};
-    if (req.user.role === 'landlord') filter = { tenant: { $in: await require('../models/userModel').find({ role: 'tenant' }).distinct('_id') } }; // landlord sees all
+    if (req.user.role === 'landlord') filter = { tenant: { $in: await require('../models/userModel.js').find({ role: 'tenant' }).distinct('_id') } }; // landlord sees all
     else if (req.user.role === 'tenant') filter = { tenant: req.user.id };
     const leases = await Lease.find(filter)
       .populate('property', 'title address rentAmount')

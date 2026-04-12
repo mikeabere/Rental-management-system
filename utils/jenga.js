@@ -1,8 +1,12 @@
+ 
+import dotenv from "dotenv";
+dotenv.config();
 import axios from 'axios';
 import crypto from 'crypto';
 import fs from 'fs';
 
 // Load private key for signature
+//console.log("Key Path:", process.env.JENGA_PRIVATE_KEY_PATH);
 const privateKey = fs.readFileSync(process.env.JENGA_PRIVATE_KEY_PATH, 'utf8');
 
 export const getJengaToken = async () => {

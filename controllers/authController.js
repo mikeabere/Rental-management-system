@@ -1,48 +1,56 @@
-import { StatusCodes } from "http-status-codes";
-import User from "../models/userModel.js";
-import { hashPassword, comparePassword } from "../utils/passwordUtils.js";
-import { UnauthenticatedError } from "../errors/customError.js";
-import { createJWT } from "../utils/tokenUtils.js";
+import User from '../models/userModel.js';
+import jwt from 'jsonwebtoken';
+
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
+};
 
 export const register = async (req, res) => {
-  const isFirstAccount = (await User.countDocuments()) === 0;
-  req.body.role = isFirstAccount ? "admin" : "user";
+  const { name, email, phone, password, role } = req.body;
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) return res.status(400).json({ message: 'User already exists' });
 
-  const hashedPassword = await hashPassword(req.body.password);
-  req.body.password = hashedPassword;
-
-  const user = await User.create(req.body);
-  res.status(StatusCodes.CREATED).json({ msg: "user created" });
+    const user = await User.create({ name, email, phone, password, role: role || 'tenant' });
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      token: generateToken(user._id, user.role)
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
 export const login = async (req, res) => {
-  // check if user exists
-  // check if password is correct
-
-  const user = await User.findOne({ email: req.body.email });
-
-  const isValidUser =
-    user && (await comparePassword(req.body.password, user.password));
-  if (!isValidUser) throw new UnauthenticatedError("invalid credentials");
-
-  const token = createJWT({ userId: user._id, role: user.role });
-  console.log(token);
-
-  const oneDay = 1000 * 60 * 60 * 24;
-
-  res.cookie("token", token, {
-    httpOnly: true,
-    expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === "production",
-  });
-
-  res.status(StatusCodes.OK).json({ msg: "user logged in" });
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (user && (await user.matchPassword(password))) {
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        token: generateToken(user._id, user.role)
+      });
+    } else {
+      res.status(401).json({ message: 'Invalid email or password' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
 
-export const logout = (req, res) => {
-  res.cookie("token", "logout", {
-    httpOnly: true,
-    expires: new Date(Date.now()),
-  });
-  res.status(StatusCodes.OK).json({ msg: "user logged out!" });
+export const getMe = async (req, res) => {
+  const user = await User.findById(req.user.id).select('-password');
+  res.json(user);
+};
+
+export const logout = async () =>  {
+
 };
