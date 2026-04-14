@@ -31,8 +31,9 @@ app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
-app.use(morgan('dev'));
-
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
+}
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/properties", propertyRouter);
 app.use("/api/v1/leases", leaseRouter);

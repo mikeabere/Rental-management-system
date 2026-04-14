@@ -1,7 +1,7 @@
 // mpesaRoutes.js
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { mpesaCallback } = require('../controllers/paymentController.js');
+import { mpesaCallback } from '../controllers/paymentController.js';
 
 router.post('/callback', mpesaCallback);
 

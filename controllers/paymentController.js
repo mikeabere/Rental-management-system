@@ -1,7 +1,7 @@
 import Payment from '../models/paymentModel.js';
 import Lease from '../models/leaseModel.js';
 import { initiateSTKPush } from '../utils/mpesa.js';
-import { initiateJengaSTK } from '../utils/jenga.js';
+//import { initiateJengaSTK } from '../utils/jenga.js';
 import { v4 as uuidv4 } from 'uuid'; //will look into this
 //will check on this controller later
 export const initiatePayment = async (req, res) => {
@@ -24,9 +24,9 @@ export const initiatePayment = async (req, res) => {
     let result;
     if (method === 'mpesa') {
       result = await initiateSTKPush(phone, amount, `RENT-${lease.property}`, 'Rent Payment');
-    } else if (method === 'jenga') {
-      result = await initiateJengaSTK(phone, amount, `RENT-${lease.property}`);
-    }
+     } //else if (method === 'jenga') {
+    //   result = await initiateJengaSTK(phone, amount, `RENT-${lease.property}`);
+    // }
 
     res.status(200).json({ message: 'Payment initiated', payment, providerResponse: result });
   } catch (err) {
