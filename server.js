@@ -2,7 +2,7 @@ import "express-async-errors";
 import dotenv from "dotenv";
 dotenv.config();
 
-import morgan from "morgan";
+import morgan from "morgan"; //http logger to terminal
 import express from "express";
 const app = express();
 import connectDB from "./config/db.js";
