@@ -74,14 +74,19 @@ const units=await Unit.find(propertyFilter.property?{property:{$in:await Propert
 app.get('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>res.json({properties:await Property.find({owner:req.user._id}).sort('-createdAt')})));
 app.post('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>{const body=parse(z.object({name:z.string().min(2),address:z.string().min(3),description:z.string().max(2000).optional()}),
 req.body); 
-res.status(201).json({property:await Property.create({...body,owner:req.user._id})});}));
-app.get('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
+res.status(201).json({property:await Property.create({...body,owner:req.user._id})});
+}));
+app.get('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{
+    const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
  if(!property)return res.status(404).json({message:'Property not found'}); res.json({units:await Unit.find({property:property._id}).sort('unitNumber')});}));
-app.post('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
- if(!property)return res.status(404).json({message:'Property not found'}); const body=parse(z.object({unitNumber:z.string().min(1),bedrooms:z.number().int().min(0).default(1),monthlyRent:z.number().positive()}),req.body); res.status(201).json({unit:await Unit.create({...body,property:property._id})});}));
+app.post('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{
+    const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
+ if(!property)return res.status(404).json({message:'Property not found'}); 
+ const body=parse(z.object({unitNumber:z.string().min(1),bedrooms:z.number().int().min(0).default(1),monthlyRent:z.number().positive()}),req.body); res.status(201).json({unit:await Unit.create({...body,property:property._id})});}));
 app.get('/api/leases',auth(),asyncHandler(async(req,res)=>{const query=req.user.role==='tenant'?{tenant:req.user._id}:{ }; 
 res.json({leases:await Lease.find(query).populate('unit tenant').sort('-createdAt')});}));
-app.post('/api/leases',auth(['admin','manager']),asyncHandler(async(req,res)=>{const body=parse(z.object({unit:z.string(),tenant:z.string(),startDate:z.coerce.date(),endDate:z.coerce.date().optional(),monthlyRent:z.number().positive(),deposit:z.number().min(0).default(0)}),
+app.post('/api/leases',auth(['admin','manager']),asyncHandler(async(req,res)=>{
+    const body=parse(z.object({unit:z.string(),tenant:z.string(),startDate:z.coerce.date(),endDate:z.coerce.date().optional(),monthlyRent:z.number().positive(),deposit:z.number().min(0).default(0)}),
 req.body); 
 const lease=await Lease.create(body); await Unit.findByIdAndUpdate(body.unit,{status:'OCCUPIED'}); 
 res.status(201).json({lease});}));
