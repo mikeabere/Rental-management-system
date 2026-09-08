@@ -1,16 +1,21 @@
 import { env } from './config.js';
+
 const base=env.MPESA_ENV==='production'?'https://api.safaricom.co.ke':'https://sandbox.safaricom.co.ke';
+
 function authHeader(){ 
     return Buffer.from(`${env.MPESA_CONSUMER_KEY}:${env.MPESA_CONSUMER_SECRET}`).toString('base64'); 
 }
 export async function getAccessToken(){
+
      const response=await fetch(`${base}/oauth/v1/generate?grant_type=client_credentials`,
         {headers:{Authorization:`Basic ${authHeader()}`
     }}); 
+
 if(!response.ok) throw new Error(`Daraja OAuth failed (${response.status})`);
  const data=await response.json();
  return data.access_token; 
 }
+
 export function normalizePhone(phone){ 
     const digits=String(phone).replace(/\D/g,''); 
     if(digits.startsWith('0')) 
@@ -19,6 +24,7 @@ export function normalizePhone(phone){
     if(digits.startsWith('254')) return digits; 
     throw new Error('Use a valid Kenyan mobile number'); 
 }
+
 export async function initiateStkPush({phone,amount,accountReference,transactionDesc}){ 
     if(!env.MPESA_CONSUMER_KEY||!env.MPESA_CONSUMER_SECRET||!env.MPESA_PASSKEY)
          throw Object.assign(new Error('Daraja credentials are not configured'),{statusCode:503}); 

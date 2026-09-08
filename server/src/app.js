@@ -25,9 +25,11 @@ const parse=(schema,data)=>{
     } 
     return result.data;
 };
+
 app.get('/api/health',(req,res)=>
     res.json({status:'ok',service:'rental-property-management-api'})
 );
+
 app.post('/api/auth/register',asyncHandler(async(req,res)=>{
     const body=parse(z.object({name:z.string().min(2),
         email:z.string().email(),
@@ -45,6 +47,7 @@ app.post('/api/auth/register',asyncHandler(async(req,res)=>{
         email:user.email,
         role:user.role}});
     }));
+
 app.post('/api/auth/login',asyncHandler(async(req,res)=>{
     const body=parse(z.object({email:z.string().email(),
         password:z.string()}),req.body);
@@ -57,6 +60,7 @@ app.post('/api/auth/login',asyncHandler(async(req,res)=>{
         email:user.email,
         role:user.role}});
     }));
+
 app.get('/api/auth/me',auth(),(req,res)=>
     res.json({user:{id:req.user._id,
         name:req.user.name,
@@ -64,6 +68,7 @@ app.get('/api/auth/me',auth(),(req,res)=>
         phone:req.user.phone,
         role:req.user.role
     }}));
+
 app.get('/api/dashboard/summary',auth(),asyncHandler(async(req,res)=>{
     const propertyFilter=['admin','manager'].includes(req.user.role)?{owner:req.user._id}:{}; 
 const properties=await Property.countDocuments(propertyFilter); 
@@ -71,30 +76,42 @@ const units=await Unit.find(propertyFilter.property?{property:{$in:await Propert
  const leases=await Lease.countDocuments(req.user.role==='tenant'?{tenant:req.user._id,status:'ACTIVE'}:{status:'ACTIVE'}); 
  const paid=await Payment.aggregate([{$match:req.user.role==='tenant'?{tenant:req.user._id,status:'COMPLETED'}:{status:'COMPLETED'}},{$group:{_id:null,total:{$sum:'$amount'}}}]); 
  res.json({properties,units:units.length,occupiedUnits:units.filter(u=>u.status==='OCCUPIED').length,activeLeases:leases,collected:paid[0]?.total||0});}));
-app.get('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>res.json({properties:await Property.find({owner:req.user._id}).sort('-createdAt')})));
-app.post('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>{const body=parse(z.object({name:z.string().min(2),address:z.string().min(3),description:z.string().max(2000).optional()}),
+app.get('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>
+    res.json({properties:await Property.find({owner:req.user._id}).sort('-createdAt')})));
+app.post('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>{
+    const body=parse(z.object({name:z.string().min(2),address:z.string().min(3),description:z.string().max(2000).optional()}),
 req.body); 
 res.status(201).json({property:await Property.create({...body,owner:req.user._id})});
 }));
+
 app.get('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{
     const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
  if(!property)return res.status(404).json({message:'Property not found'}); res.json({units:await Unit.find({property:property._id}).sort('unitNumber')});}));
 app.post('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{
     const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
  if(!property)return res.status(404).json({message:'Property not found'}); 
- const body=parse(z.object({unitNumber:z.string().min(1),bedrooms:z.number().int().min(0).default(1),monthlyRent:z.number().positive()}),req.body); res.status(201).json({unit:await Unit.create({...body,property:property._id})});}));
+ const body=parse(z.object({unitNumber:z.string().min(1),bedrooms:z.number().int().min(0).default(1),monthlyRent:z.number().positive()}),req.body);
+  res.status(201).json({unit:await Unit.create({...body,property:property._id})});}));
 app.get('/api/leases',auth(),asyncHandler(async(req,res)=>{const query=req.user.role==='tenant'?{tenant:req.user._id}:{ }; 
 res.json({leases:await Lease.find(query).populate('unit tenant').sort('-createdAt')});}));
 app.post('/api/leases',auth(['admin','manager']),asyncHandler(async(req,res)=>{
-    const body=parse(z.object({unit:z.string(),tenant:z.string(),startDate:z.coerce.date(),endDate:z.coerce.date().optional(),monthlyRent:z.number().positive(),deposit:z.number().min(0).default(0)}),
+    const body=parse(z.object({unit:z.string(),
+        tenant:z.string(),
+        startDate:z.coerce.date(),
+        endDate:z.coerce.date().optional(),
+        monthlyRent:z.number().positive(),
+        deposit:z.number().min(0).default(0)}),
 req.body); 
-const lease=await Lease.create(body); await Unit.findByIdAndUpdate(body.unit,{status:'OCCUPIED'}); 
+const lease=await Lease.create(body); 
+await Unit.findByIdAndUpdate(body.unit,{status:'OCCUPIED'}); 
 res.status(201).json({lease});}));
 app.get('/api/payments',auth(),asyncHandler(async(req,res)=>{
     const query=req.user.role==='tenant'?{tenant:req.user._id}:{};
      res.json({payments:await Payment.find(query).populate('lease').sort('-createdAt').limit(100)});}));
 app.post('/api/payments/mpesa/stk-push',auth(),asyncHandler(async(req,res)=>{
-    const body=parse(z.object({lease:z.string(),amount:z.number().positive(),phone:z.string().min(9)}),
+    const body=parse(z.object({lease:z.string(),
+        amount:z.number().positive(),
+        phone:z.string().min(9)}),
     req.body);
  const lease=await Lease.findOne(req.user.role==='tenant'?{_id:body.lease,tenant:req.user._id}:{_id:body.lease}); 
  if(!lease)
@@ -110,11 +127,14 @@ const payment=await Payment.create({lease:lease._id,
              payment.merchantRequestId=result.MerchantRequestID; 
              payment.checkoutRequestId=result.CheckoutRequestID;
               await payment.save(); 
-              res.status(202).json({message:'STK Push sent. Complete it on your phone.',paymentId:payment._id,checkoutRequestId:payment.checkoutRequestId});} 
+              res.status(202).json({message:'STK Push sent. Complete it on your phone.',
+                paymentId:payment._id,
+                checkoutRequestId:payment.checkoutRequestId});} 
               catch(error){
                 payment.status='FAILED';
                  payment.resultDescription=error.message; 
-                 await payment.save(); throw error;
+                 await payment.save(); 
+                 throw error;
                 }}));
 app.post('/api/payments/mpesa/callback',asyncHandler(async(req,res)=>{
     const callback=req.body?.Body?.stkCallback; 
