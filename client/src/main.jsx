@@ -4,6 +4,7 @@ import {createRoot} from 'react-dom/client';
  import './styles.css';
 
 const api=async(path,options={})=>{
+
   const response=await fetch(path,{...options,
     headers:{'Content-Type':'application/json',
     ...(options.headers||{}),
@@ -33,8 +34,7 @@ function Auth({onLogin}){
           <div className="eyebrow">RENTWISE / KENYA</div>
           <h1>{mode==='login'?'Manage every home.':'Create your workspace.'}
             </h1>
-            <p className="muted">A calm operating system for rent, leases and occupancy.
-              </p>
+            <p className="muted">A calm operating system for rent, leases and occupancy.</p>
               <form onSubmit={submit}>
                 {mode==='register'&&<input placeholder="Full name" required value={form.name} 
                 onChange={e=>setForm({...form,name:e.target.value})}/>}
@@ -46,9 +46,7 @@ function Auth({onLogin}){
                   <option value="manager">Property manager</option>
                   <option value="tenant">Tenant</option>
                   </select>}
-                  <button>
-                    {mode==='login'?'Sign in':'Create account'}
-                    </button>
+                  <button>{mode==='login'?'Sign in':'Create account'}</button>
                     </form>
                     {error&&<div className="error">{error}</div>}
                     <button className="link" onClick={()=>setMode(mode==='login'?'register':'login')}>
@@ -61,6 +59,7 @@ function App(){
   [summary,setSummary]=useState(null),
   [payments,setPayments]=useState([]),
   [error,setError]=useState(''); 
+
   useEffect(()=>{
     if(localStorage.token)api('/api/auth/me')
       .then(d=>setUser(d.user))
@@ -82,8 +81,9 @@ function App(){
           <span>R</span> 
           Rentwise
           </div>
+
           <nav>
-            <a className="active">Overview</a>
+              <a className="active">Overview</a>
               <a>Properties</a>
               <a>Leases</a>
               <a>Payments</a>
@@ -128,11 +128,13 @@ function App(){
                                       <div>
                                       <div className="eyebrow">ACTIVITY</div>
                                       <h3>Recent payments</h3>
-                                      </div><span className="pill">{payments.length} records</span>
+                                      </div>
+                                      <span className="pill">{payments.length} records</span>
                                       </div>
                                       {payments.length?<div className="table">
                                         {payments.slice(0,6).map(p=><div className="row" key={p._id}>
-                                          <div><strong>{p.mpesaReceiptNumber||'M-Pesa payment'}</strong>
+                                          <div>
+                                          <strong>{p.mpesaReceiptNumber||'M-Pesa payment'}</strong>
                                           <small>{new Date(p.createdAt).toLocaleDateString('en-KE')}</small>
                                           </div>
                                           <strong>KES {Number(p.amount).toLocaleString()}</strong>
@@ -143,7 +145,9 @@ function App(){
                                           </main>
                                           </div>}
 function Stat({label,value}){
-  return 
+  return (
   <div className="stat"><span>{label}</span>
-  <strong>{value}</strong></div>} 
+  <strong>{value}</strong></div>
+  )} 
+  
   createRoot(document.getElementById('root')).render(<App/>);
