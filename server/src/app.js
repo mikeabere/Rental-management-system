@@ -27,7 +27,7 @@ const parse=(schema,data)=>{
 };
 
 app.get('/api/health',(req,res)=>
-    res.json({status:'ok',service:'rental-property-management-api'})
+    res.json({status:'ok',service:'Rental-management-system-api'})
 );
 
 app.post('/api/auth/register',asyncHandler(async(req,res)=>{
@@ -71,29 +71,44 @@ app.get('/api/auth/me',auth(),(req,res)=>
 
 app.get('/api/dashboard/summary',auth(),asyncHandler(async(req,res)=>{
     const propertyFilter=['admin','manager'].includes(req.user.role)?{owner:req.user._id}:{}; 
-const properties=await Property.countDocuments(propertyFilter); 
-const units=await Unit.find(propertyFilter.property?{property:{$in:await Property.find(propertyFilter).distinct('_id')}}:{});
- const leases=await Lease.countDocuments(req.user.role==='tenant'?{tenant:req.user._id,status:'ACTIVE'}:{status:'ACTIVE'}); 
- const paid=await Payment.aggregate([{$match:req.user.role==='tenant'?{tenant:req.user._id,status:'COMPLETED'}:{status:'COMPLETED'}},{$group:{_id:null,total:{$sum:'$amount'}}}]); 
- res.json({properties,units:units.length,occupiedUnits:units.filter(u=>u.status==='OCCUPIED').length,activeLeases:leases,collected:paid[0]?.total||0});}));
+    const properties=await Property.countDocuments(propertyFilter); 
+    const units=await Unit.find(propertyFilter.property?{property:{$in:await Property.find(propertyFilter).distinct('_id')}}:{});
+    const leases=await Lease.countDocuments(req.user.role==='tenant'?{tenant:req.user._id,status:'ACTIVE'}:{status:'ACTIVE'}); 
+    const paid=await Payment.aggregate([{$match:req.user.role==='tenant'?{tenant:req.user._id,status:'COMPLETED'}:{status:'COMPLETED'}},
+        {$group:{_id:null,total:{$sum:'$amount'}}}]); 
+    res.json({properties,
+        units:units.length,
+        occupiedUnits:units.filter(u=>u.status==='OCCUPIED').length,
+        activeLeases:leases,
+        collected:paid[0]?.total||0});}));
 app.get('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>
     res.json({properties:await Property.find({owner:req.user._id}).sort('-createdAt')})));
 app.post('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>{
-    const body=parse(z.object({name:z.string().min(2),address:z.string().min(3),description:z.string().max(2000).optional()}),
-req.body); 
+    const body=parse(z.object({name:z.string().min(2),
+        address:z.string().min(3),
+        description:z.string().max(2000).optional()}),
+        req.body); 
 res.status(201).json({property:await Property.create({...body,owner:req.user._id})});
 }));
 
 app.get('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{
     const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
- if(!property)return res.status(404).json({message:'Property not found'}); res.json({units:await Unit.find({property:property._id}).sort('unitNumber')});}));
+ if(!property)return res.status(404).json({message:'Property not found'});
+  res.json({units:await Unit.find({property:property._id}).sort('unitNumber')});
+}));
 app.post('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(async(req,res)=>{
     const property=await Property.findOne({_id:req.params.id,owner:req.user._id});
  if(!property)return res.status(404).json({message:'Property not found'}); 
- const body=parse(z.object({unitNumber:z.string().min(1),bedrooms:z.number().int().min(0).default(1),monthlyRent:z.number().positive()}),req.body);
-  res.status(201).json({unit:await Unit.create({...body,property:property._id})});}));
-app.get('/api/leases',auth(),asyncHandler(async(req,res)=>{const query=req.user.role==='tenant'?{tenant:req.user._id}:{ }; 
-res.json({leases:await Lease.find(query).populate('unit tenant').sort('-createdAt')});}));
+ const body=parse(z.object({unitNumber:z.string().min(1),
+    bedrooms:z.number().int().min(0).default(1),
+    monthlyRent:z.number().positive()}),
+    req.body);
+  res.status(201).json({unit:await Unit.create({...body,property:property._id})});
+}));
+app.get('/api/leases',auth(),asyncHandler(async(req,res)=>{
+    const query=req.user.role==='tenant'?{tenant:req.user._id}:{ }; 
+res.json({leases:await Lease.find(query).populate('unit tenant').sort('-createdAt')});
+}));
 app.post('/api/leases',auth(['admin','manager']),asyncHandler(async(req,res)=>{
     const body=parse(z.object({unit:z.string(),
         tenant:z.string(),
@@ -104,10 +119,12 @@ app.post('/api/leases',auth(['admin','manager']),asyncHandler(async(req,res)=>{
 req.body); 
 const lease=await Lease.create(body); 
 await Unit.findByIdAndUpdate(body.unit,{status:'OCCUPIED'}); 
-res.status(201).json({lease});}));
+res.status(201).json({lease});
+}));
 app.get('/api/payments',auth(),asyncHandler(async(req,res)=>{
     const query=req.user.role==='tenant'?{tenant:req.user._id}:{};
-     res.json({payments:await Payment.find(query).populate('lease').sort('-createdAt').limit(100)});}));
+     res.json({payments:await Payment.find(query).populate('lease').sort('-createdAt').limit(100)});
+    }));
 app.post('/api/payments/mpesa/stk-push',auth(),asyncHandler(async(req,res)=>{
     const body=parse(z.object({lease:z.string(),
         amount:z.number().positive(),
@@ -120,22 +137,26 @@ const payment=await Payment.create({lease:lease._id,
     tenant:lease.tenant,
     amount:body.amount,phone:normalizePhone(body.phone)});
      try {
-        const result=await initiateStkPush({phone:body.phone,
+        const result=await initiateStkPush({
+            phone:body.phone,
             amount:body.amount,
             accountReference:`LEASE-${lease._id.toString().slice(-8)}`,
-            transactionDesc:'Rental payment'});
+            transactionDesc:'Rental payment'
+        });
              payment.merchantRequestId=result.MerchantRequestID; 
              payment.checkoutRequestId=result.CheckoutRequestID;
               await payment.save(); 
               res.status(202).json({message:'STK Push sent. Complete it on your phone.',
                 paymentId:payment._id,
-                checkoutRequestId:payment.checkoutRequestId});} 
+                checkoutRequestId:payment.checkoutRequestId});
+            } 
               catch(error){
                 payment.status='FAILED';
                  payment.resultDescription=error.message; 
                  await payment.save(); 
                  throw error;
-                }}));
+                }
+            }));
 app.post('/api/payments/mpesa/callback',asyncHandler(async(req,res)=>{
     const callback=req.body?.Body?.stkCallback; 
     if(!callback)
@@ -149,8 +170,12 @@ app.post('/api/payments/mpesa/callback',asyncHandler(async(req,res)=>{
             const items=Object.fromEntries((callback.CallbackMetadata?.Item||[]).map(item=>[item.Name,item.Value])); 
             payment.status='COMPLETED'; 
             payment.mpesaReceiptNumber=items.MpesaReceiptNumber; 
-            payment.paidAt=new Date();}else payment.status='FAILED';
-             await payment.save();} res.json({ResultCode:0,ResultDesc:'Accepted'});
+            payment.paidAt=new Date();
+        }else payment.status='FAILED';
+             await payment.save();
+            } 
+            res.json({ResultCode:0,ResultDesc:'Accepted'});
             }));
-app.use(notFound); app.use(errorHandler); 
+app.use(notFound);
+app.use(errorHandler); 
 export default app;

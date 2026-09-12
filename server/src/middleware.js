@@ -11,14 +11,16 @@ export function notFound(req,res){
 export function errorHandler(err,req,res,next){
      console.error(err);
       const status=err.statusCode|| (err.name==='ValidationError'?400:500); 
-     res.status(status).json({message:status===500?'Internal server error':err.message, ...(env.NODE_ENV!=='production'&&{stack:err.stack})}); 
+     res.status(status).json({message:status===500?'Internal server error':err.message,
+         ...(env.NODE_ENV!=='production'&&{stack:err.stack})}); 
     }
 export function auth(requiredRoles=[]){ 
     return asyncHandler(async(req,res,next)=>{ 
         const header=req.headers.authorization;
          if(!header?.startsWith('Bearer ')){ 
             return res.status(401).json({message:'Authentication required'}); 
-        } try { 
+        } 
+        try { 
             const payload=jwt.verify(header.slice(7),env.JWT_SECRET); 
             const user=await User.findById(payload.sub); 
             if(!user) 

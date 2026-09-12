@@ -1,36 +1,15 @@
 {
-  "name": "rental-management-system",
+  "name": "Rental management system",
+  "private": true,
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
- "workspaces": ["server", "client"],
-  "scripts": {"dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+  "workspaces": ["server", "client"],
+  "scripts": {
+  "dev": "concurrently \"npm run dev --workspace server\" \"npm run dev --workspace client\"", 
   "install:all": "npm install", 
   "test": "npm test --workspace server", 
-  "build": "npm run build --workspace client"},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "axios": "^1.15.0",
-    "bcryptjs": "^2.4.3",
-    "cloudinary": "^2.4.0",
-    "concurrently": "^8.2.2",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "dayjs": "^1.11.12",
-    "dotenv": "^16.4.5",
-    "env": "^0.0.2",
-    "express": "^4.19.2",
-    "express-async-errors": "^3.1.1",
-    "helmet": "^8.1.0",
-    "http-status-codes": "^2.3.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.10.0",
-    "mongoose": "^8.5.2",
-    "morgan": "^1.10.1",
-    "nodemon": "^3.1.4",
-    "uuid": "^13.0.0"
+  "build": "npm run build --workspace client"
+},
+  "devDependencies": {
+    "concurrently": "^9.1.2"
   }
 }
