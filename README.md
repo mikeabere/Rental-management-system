@@ -65,6 +65,3 @@ The callback endpoint is intentionally public because Safaricom must call it. It
 - Add SMS/email receipts, document uploads, tenancy screening, and detailed audit logs as domain requirements evolve.
 - Configure monitoring for callback failures and payment states stuck in `PENDING`.
 
-## License
-
-MIT
