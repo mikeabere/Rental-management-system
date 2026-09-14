@@ -21,7 +21,8 @@ const parse=(schema,data)=>{
     const result=schema.safeParse(data);
      if(!result.success){
         const e=new Error(result.error.issues.map(i=>`${i.path.join('.')}: ${i.message}`).join('; ')); 
-        e.statusCode=400; throw e;
+        e.statusCode=400; 
+        throw e;
     } 
     return result.data;
 };
@@ -80,7 +81,8 @@ app.get('/api/dashboard/summary',auth(),asyncHandler(async(req,res)=>{
         units:units.length,
         occupiedUnits:units.filter(u=>u.status==='OCCUPIED').length,
         activeLeases:leases,
-        collected:paid[0]?.total||0});}));
+        collected:paid[0]?.total||0});
+    }));
 app.get('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>
     res.json({properties:await Property.find({owner:req.user._id}).sort('-createdAt')})));
 app.post('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>{
@@ -171,7 +173,8 @@ app.post('/api/payments/mpesa/callback',asyncHandler(async(req,res)=>{
             payment.status='COMPLETED'; 
             payment.mpesaReceiptNumber=items.MpesaReceiptNumber; 
             payment.paidAt=new Date();
-        }else payment.status='FAILED';
+        }
+        else payment.status='FAILED';
              await payment.save();
             } 
             res.json({ResultCode:0,ResultDesc:'Accepted'});
