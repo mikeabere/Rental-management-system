@@ -3,12 +3,13 @@
     font-family:Manrope,system-ui;
     color:#17221d;
     background:#f5f7f4;
-    line-height:1.5
+    line-height:1.5;
 }
-*{box-sizing:border-box
+*{
+    box-sizing:border-box;
 }
     body{
-        margin:0
+        margin:0;
     }
     .shell{
         display:flex;
@@ -230,7 +231,7 @@
 			}
 			.muted{
 				color:#718077;
-				margin-bottom:28px
+				margin-bottom:28px;
 			}
 			.auth form{
 				display:grid;
@@ -265,7 +266,7 @@
 				background:none;
 				color:#315b43;
 				padding:16px 0 0;
-				font-weight:600
+				font-weight:600;
 			}
 			.error{
 				background:#ffe0dc;

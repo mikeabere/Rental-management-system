@@ -18,6 +18,7 @@ function Auth({onLogin}){
   const [mode,setMode]=useState('login'),
   [form,setForm]=useState({email:'',password:'',name:'',role:'manager'}),
   [error,setError]=useState(''); 
+
   const submit=async e=>{
     e.preventDefault();
     setError('')
@@ -28,7 +29,8 @@ function Auth({onLogin}){
       onLogin(data.user);
     }catch(e){
       setError(e.message)
-    }};
+    }
+  };
        return <main className="auth">
         <div className="auth-card">
           <div className="eyebrow">RENTWISE / KENYA</div>
@@ -67,7 +69,8 @@ function App(){
 
     useEffect(()=>{
       if(user){Promise.all([api('/api/dashboard/summary'),
-      api('/api/payments')]).then(([a,b])=>{setSummary(a);
+      api('/api/payments')]).then(([a,b])=>{
+        setSummary(a);
       setPayments(b.payments)})
       .catch(e=>setError(e.message))}},[user]); 
 
@@ -146,8 +149,11 @@ function App(){
                                           </div>}
 function Stat({label,value}){
   return (
-  <div className="stat"><span>{label}</span>
-  <strong>{value}</strong></div>
-  )} 
+  <div className="stat">
+  <span>{label}</span>
+  <strong>{value}</strong>
+  </div>
+  )
+} 
   
   createRoot(document.getElementById('root')).render(<App/>);
