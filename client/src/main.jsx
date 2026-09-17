@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react'; 
 import {createRoot} from 'react-dom/client';
+import {Link} from 'react-router-dom';
 
  import './styles.css';
 
@@ -86,10 +87,10 @@ function App(){
           </div>
 
           <nav>
-              <a className="active">Overview</a>
-              <a>Properties</a>
-              <a>Leases</a>
-              <a>Payments</a>
+              <a  className="active">Overview</a>
+              <a href="./properties">Properties</a>
+              <a href="./leases">Leases</a>
+              <a href="./payments">Payments</a>
               </nav>
 
               <div className="profile">
