@@ -87,10 +87,10 @@ function App(){
           </div>
 
           <nav>
-              <Link to="/">Overview</Link>
-              <Link to="/properties">Properties</Link>
-              <Link to="/leases">Leases</Link>
-              <Link to="/payments">Payments</Link>
+              <a href="/">Overview</a>
+              <a href="./properties">Properties</a>
+              <a href="./leases">Leases</a>
+              <a href="./payments">Payments</a>
               </nav>
 
               <div className="profile">
