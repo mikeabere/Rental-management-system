@@ -1,8 +1,18 @@
 import React,{useEffect,useState} from 'react'; 
 import {createRoot} from 'react-dom/client';
-import {Link} from 'react-router';
+import {Link, Routes, Route } from 'react-router';
 
  import './styles.css';
+
+import payments from './payments.jsx';
+import properties from './properties.jsx';
+import leases from './leases.jsx';
+
+     <Routes>
+        <Route path="payments" element={<payments />} />
+        <Route path="properties" element={<properties />} />
+        <Route path="leases" element={<leases />} />
+      </Routes>
 
 const api=async(path,options={})=>{
 
@@ -14,6 +24,7 @@ const api=async(path,options={})=>{
   if(!response.ok)throw new Error(data.message||'Request failed');
    return data;
   };
+  
 
 function Auth({onLogin}){
   const [mode,setMode]=useState('login'),
@@ -57,6 +68,8 @@ function Auth({onLogin}){
                       </button>
                       </div>
                       </main>}
+
+       
 function App(){
   const [user,setUser]=useState(null),
   [summary,setSummary]=useState(null),
@@ -79,6 +92,8 @@ function App(){
   const logout=()=>{
     localStorage.removeItem('token');
     setUser(null)};
+
+   
      return <div className="shell">
       <aside>
         <div className="brand">
@@ -87,10 +102,10 @@ function App(){
           </div>
 
           <nav>
-              <a href="/">Overview</a>
-              <a href="./properties">Properties</a>
-              <a href="./leases">Leases</a>
-              <a href="./payments">Payments</a>
+              <Link to="/">Overview</Link>
+              <Link to="./properties">Properties</Link>
+              <Link to="./leases">Leases</Link>
+              <Link to="./payments">Payments</Link>
               </nav>
 
               <div className="profile">
