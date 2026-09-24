@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { env } from './config.js';
-import { User } from './models.js';
+import { env } from '../config.js';
+import { User } from '../models.js';
 export function asyncHandler(fn){ 
     return (req,res,next)=>Promise.resolve(fn(req,res,next))
     .catch(next);
