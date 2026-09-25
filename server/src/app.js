@@ -83,6 +83,7 @@ app.get('/api/dashboard/summary',auth(),asyncHandler(async(req,res)=>{
         activeLeases:leases,
         collected:paid[0]?.total||0});
     }));
+
 app.get('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>
     res.json({properties:await Property.find({owner:req.user._id}).sort('-createdAt')})));
 app.post('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>{
@@ -107,6 +108,7 @@ app.post('/api/properties/:id/units',auth(['admin','manager']),asyncHandler(asyn
     req.body);
   res.status(201).json({unit:await Unit.create({...body,property:property._id})});
 }));
+
 app.get('/api/leases',auth(),asyncHandler(async(req,res)=>{
     const query=req.user.role==='tenant'?{tenant:req.user._id}:{ }; 
 res.json({leases:await Lease.find(query).populate('unit tenant').sort('-createdAt')});
@@ -123,6 +125,7 @@ const lease=await Lease.create(body);
 await Unit.findByIdAndUpdate(body.unit,{status:'OCCUPIED'}); 
 res.status(201).json({lease});
 }));
+
 app.get('/api/payments',auth(),asyncHandler(async(req,res)=>{
     const query=req.user.role==='tenant'?{tenant:req.user._id}:{};
      res.json({payments:await Payment.find(query).populate('lease').sort('-createdAt').limit(100)});
