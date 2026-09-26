@@ -1,6 +1,6 @@
 import { User, Property, Unit, Lease, Payment } from './controllers/models.js'; 
-import { asyncHandler, auth, errorHandler, notFound, signToken } from './middleware.js'; 
-
+import { asyncHandler, auth, signToken } from './middleware.js'; 
+import { z } from 'zod';
 
 app.post('/api/auth/register',asyncHandler(async(req,res)=>{
     const body=parse(z.object({name:z.string().min(2),

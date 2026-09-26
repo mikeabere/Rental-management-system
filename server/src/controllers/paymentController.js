@@ -1,11 +1,13 @@
 import { asyncHandler, auth } from './middleware.js'; 
 import { Lease, Payment } from './models.js'; 
 import { initiateStkPush, normalizePhone } from './daraja.js';
+import { z } from 'zod';
 
 app.get('/api/payments',auth(),asyncHandler(async(req,res)=>{
     const query=req.user.role==='tenant'?{tenant:req.user._id}:{};
      res.json({payments:await Payment.find(query).populate('lease').sort('-createdAt').limit(100)});
     }));
+
 app.post('/api/payments/mpesa/stk-push',auth(),asyncHandler(async(req,res)=>{
     const body=parse(z.object({lease:z.string(),
         amount:z.number().positive(),
@@ -14,7 +16,7 @@ app.post('/api/payments/mpesa/stk-push',auth(),asyncHandler(async(req,res)=>{
  const lease=await Lease.findOne(req.user.role==='tenant'?{_id:body.lease,tenant:req.user._id}:{_id:body.lease}); 
  if(!lease)
     return res.status(404).json({message:'Lease not found'}); 
-const payment=await Payment.create({lease:lease._id,
+ const payment=await Payment.create({lease:lease._id,
     tenant:lease.tenant,
     amount:body.amount,phone:normalizePhone(body.phone)});
      try {
@@ -38,6 +40,7 @@ const payment=await Payment.create({lease:lease._id,
                  throw error;
                 }
             }));
+
 app.post('/api/payments/mpesa/callback',asyncHandler(async(req,res)=>{
     const callback=req.body?.Body?.stkCallback; 
     if(!callback)

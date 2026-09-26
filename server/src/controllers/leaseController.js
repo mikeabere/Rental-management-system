@@ -1,6 +1,6 @@
 import { Unit, Lease } from './models.js'; 
 import { asyncHandler, auth } from './middleware.js'; 
-
+import { z } from 'zod';
 app.get('/api/leases',auth(),asyncHandler(async(req,res)=>{
     const query=req.user.role==='tenant'?{tenant:req.user._id}:{ }; 
 res.json({leases:await Lease.find(query).populate('unit tenant').sort('-createdAt')});
