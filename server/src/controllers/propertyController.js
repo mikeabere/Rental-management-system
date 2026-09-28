@@ -1,6 +1,7 @@
 import { Property, Unit } from './models.js';
 import { asyncHandler, auth } from './middleware.js'; 
 import { z } from 'zod';
+
 app.get('/api/properties',auth(['admin','manager']),asyncHandler(async(req,res)=>
     res.json({properties:await Property.find({owner:req.user._id}).sort('-createdAt')})));
 
