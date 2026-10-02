@@ -7,3 +7,5 @@ router.get('/:id',getPropertyById);
 router.post('/',createProperty);
 router.put('/:id',updateProperty);
 router.delete('/:id',deleteProperty);
+
+export {router as propertyRoutes};

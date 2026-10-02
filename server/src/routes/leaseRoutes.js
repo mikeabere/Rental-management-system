@@ -7,3 +7,5 @@ router.get('/', getLeases);
 router.get('/:id', getLeaseById);
 router.put('/:id', updateLease);
 router.delete('/:id', deleteLease);
+
+export {router as leaseRoutes};

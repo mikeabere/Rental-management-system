@@ -8,4 +8,6 @@ describe('API',()=>{it('reports health',async()=>{
     }); 
     it('rejects protected routes without a token',async()=>{
         const response=await request(app).get('/api/payments');
-         expect(response.status).toBe(401);});});
+         expect(response.status).toBe(401);
+        });
+    });
